@@ -1,0 +1,27 @@
+.pay-page { color: #20213a; font-family: Inter, system-ui, sans-serif; }
+.pay-heading h2 { font-size: 22px; font-weight: 700; margin: 24px 0 4px; }
+.pay-heading p { margin: 0 0 16px; color: #666a85; }
+.pay-error { background: #fde8e8; color: #9b1c1c; padding: 10px 14px; border-radius: 10px; }
+.pay-notice { background: #e6f6ec; color: #17653a; padding: 10px 14px; border-radius: 10px; }
+.pay-stats { display: flex; gap: 16px; margin: 16px 0; flex-wrap: wrap; }
+.pay-stat { background: #fff; border: 1px solid #e1e3f0; border-radius: 12px; padding: 14px 20px; min-width: 180px; }
+.pay-stat span { display: block; color: #666a85; font-size: 13px; }
+.pay-stat strong { font-size: 24px; }
+.pay-form { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; background: #fff; border: 1px solid #e1e3f0; border-radius: 14px; padding: 18px; }
+.pay-field label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+.pay-field input, .pay-field select { box-sizing: border-box; width: 100%; padding: 10px 12px; border: 1px solid #e1e3f0; border-radius: 10px; font: inherit; font-size: 14px; background: #fff; }
+.pay-net { grid-column: 1 / -1; font-size: 15px; }
+.pay-button { grid-column: 1 / -1; justify-self: start; background: #7964ee; color: #fff; border: 0; border-radius: 10px; padding: 11px 22px; font-weight: 600; cursor: pointer; }
+.pay-button:disabled { opacity: .6; cursor: not-allowed; }
+.pay-list-head { display: flex; justify-content: space-between; align-items: center; margin: 24px 0 12px; flex-wrap: wrap; gap: 10px; }
+.pay-list-head h3 { margin: 0; }
+.pay-filter { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; }
+.pay-filter select { padding: 8px 10px; border: 1px solid #e1e3f0; border-radius: 8px; background: #fff; font: inherit; }
+.pay-table-wrap { overflow-x: auto; background: #fff; border: 1px solid #e1e3f0; border-radius: 14px; }
+.pay-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.pay-table th, .pay-table td { padding: 12px 14px; text-align: left; border-bottom: 1px solid #eef0f8; white-space: nowrap; }
+.pay-table th { font-size: 12px; color: #666a85; text-transform: uppercase; }
+.pay-actions { display: flex; gap: 8px; }
+.pay-actions button { background: none; border: 1px solid #c9ccea; color: #4a3fc4; border-radius: 8px; padding: 5px 12px; cursor: pointer; }
+.pay-actions .pay-delete { border-color: #e1b4b4; color: #9b1c1c; }
+@media (max-width: 700px) { .pay-form { grid-template-columns: 1fr; } }

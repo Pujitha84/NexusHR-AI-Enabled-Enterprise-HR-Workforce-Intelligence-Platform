@@ -1,0 +1,24 @@
+.perf-page { color: #20213a; font-family: Inter, system-ui, sans-serif; }
+.perf-heading h2 { font-size: 22px; font-weight: 700; margin: 24px 0 4px; }
+.perf-heading p { margin: 0 0 16px; color: #666a85; }
+.perf-error { background: #fde8e8; color: #9b1c1c; padding: 10px 14px; border-radius: 10px; }
+.perf-notice { background: #e6f6ec; color: #17653a; padding: 10px 14px; border-radius: 10px; }
+.perf-stats { display: flex; gap: 16px; margin: 16px 0; flex-wrap: wrap; }
+.perf-stat { background: #fff; border: 1px solid #e1e3f0; border-radius: 12px; padding: 14px 20px; min-width: 160px; }
+.perf-stat span { display: block; color: #666a85; font-size: 13px; }
+.perf-stat strong { font-size: 26px; }
+.perf-form { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; background: #fff; border: 1px solid #e1e3f0; border-radius: 14px; padding: 18px; }
+.perf-field label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+.perf-field input, .perf-field select, .perf-field textarea { box-sizing: border-box; width: 100%; padding: 10px 12px; border: 1px solid #e1e3f0; border-radius: 10px; font: inherit; font-size: 14px; }
+.perf-field textarea { min-height: 80px; resize: vertical; }
+.perf-wide { grid-column: 1 / -1; }
+.perf-button { grid-column: 1 / -1; justify-self: start; background: #7964ee; color: #fff; border: 0; border-radius: 10px; padding: 11px 22px; font-weight: 600; cursor: pointer; }
+.perf-button:disabled { opacity: .6; cursor: not-allowed; }
+.perf-list-title { margin: 24px 0 12px; }
+.perf-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
+.perf-card { background: #fff; border: 1px solid #e1e3f0; border-radius: 14px; padding: 16px; }
+.perf-card p { margin: 6px 0; font-size: 14px; }
+.perf-card-top { display: flex; justify-content: space-between; }
+.perf-stars { color: #f5a524; font-size: 20px; margin: 6px 0; }
+.perf-delete { background: none; border: 1px solid #e1b4b4; color: #9b1c1c; border-radius: 8px; padding: 5px 12px; cursor: pointer; }
+@media (max-width: 700px) { .perf-form { grid-template-columns: 1fr; } }
