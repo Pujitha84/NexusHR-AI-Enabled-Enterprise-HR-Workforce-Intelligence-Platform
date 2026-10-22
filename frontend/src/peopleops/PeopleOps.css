@@ -1,0 +1,95 @@
+
+.people-ops-page {
+  color: #20213a;
+  font-family: Inter, system-ui, sans-serif;
+}
+
+.people-ops-page h2 {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 24px 0 16px;
+}
+
+.people-ops-page input,
+.people-ops-page select,
+.people-ops-page textarea {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  padding: 11px 13px;
+  border: 1px solid #e1e3f0;
+  border-radius: 10px;
+  background: #fff;
+  color: #292943;
+  font: inherit;
+  font-size: 14px;
+  outline: none;
+  transition: border-color .2s, box-shadow .2s;
+}
+
+.people-ops-page input:focus,
+.people-ops-page select:focus,
+.people-ops-page textarea:focus {
+  border-color: #7964ee;
+  box-shadow: 0 0 0 3px #7964ee20;
+}
+
+.people-ops-page textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+.people-ops-page button {
+  padding: 10px 16px;
+  border: 0;
+  border-radius: 10px;
+  background: #7257e8;
+  color: white;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .2s, transform .2s;
+}
+
+.people-ops-page button:hover {
+  background: #5c43d0;
+  transform: translateY(-1px);
+}
+
+.people-ops-page button:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.people-ops-page form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  padding: 24px;
+  border: 1px solid #eceaf8;
+  border-radius: 16px;
+  background: white;
+  box-shadow: 0 4px 20px #29205b08;
+}
+
+.people-ops-page form label {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  color: #555570;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.people-ops-page form button {
+  align-self: end;
+}
+
+@media (max-width: 700px) {
+  .people-ops-page form {
+    grid-template-columns: 1fr;
+    padding: 16px;
+  }
+}
