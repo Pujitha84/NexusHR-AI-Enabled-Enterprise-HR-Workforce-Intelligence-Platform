@@ -5,6 +5,9 @@ import LeaveManagement from './LeaveManagement'
 import PeopleOps from './peopleops/PeopleOps'
 import PerformanceReviews from './performance/Performance'
 import PayrollPage from './payroll/Payroll'
+import './lifecycle.css'
+
+type EmployeeStatus = 'ACTIVE' | 'ON_NOTICE' | 'OFFBOARDED'
 
 type Employee = {
   id: number
@@ -13,6 +16,9 @@ type Employee = {
   email: string
   department: string
   jobTitle: string
+  status?: EmployeeStatus
+  joiningDate?: string | null
+  offboardingDate?: string | null
 }
 
 type EmployeeForm = {
@@ -588,6 +594,51 @@ useEffect(() => {
     }
   }
 
+  async function changeEmployeeStatus(
+    employee: Employee,
+    status: EmployeeStatus,
+  ) {
+    const action =
+      status === 'OFFBOARDED'
+        ? 'offboard'
+        : status === 'ON_NOTICE'
+          ? 'put on notice'
+          : 'reactivate'
+
+    const confirmed = window.confirm(
+      `Do you want to ${action} ${employee.firstName} ${employee.lastName}?`,
+    )
+    if (!confirmed) return
+
+    setError('')
+    setNotice('')
+
+    try {
+      const response = await fetch(`/api/employees/${employee.id}/status`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status }),
+      })
+
+      if (!response.ok) {
+        const data = await response.json().catch(() => ({}))
+        throw new Error(data.message || 'Could not update employment status.')
+      }
+
+      const updated: Employee = await response.json()
+      setEmployees((current) =>
+        current.map((item) => (item.id === updated.id ? updated : item)),
+      )
+      setNotice(
+        `${updated.firstName} ${updated.lastName} is now ${status
+          .replace('_', ' ')
+          .toLowerCase()}.`,
+      )
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Something went wrong.')
+    }
+  }
+
   function getAttendance(employeeId: number) {
     return attendance.find((record) => record.employeeId === employeeId)
   }
@@ -1103,6 +1154,7 @@ useEffect(() => {
                         <th>EMPLOYEE</th>
                         <th>DEPARTMENT</th>
                         <th>JOB TITLE</th>
+                        <th>STATUS</th>
                         <th>EMPLOYEE ID</th>
                         <th>
                           <span className="sr-only">Actions</span>
@@ -1113,13 +1165,13 @@ useEffect(() => {
                     <tbody>
                       {loading ? (
                         <tr>
-                          <td colSpan={5} className="empty-state">
+                          <td colSpan={6} className="empty-state">
                             Loading employee records...
                           </td>
                         </tr>
                       ) : filteredEmployees.length === 0 ? (
                         <tr>
-                          <td colSpan={5} className="empty-state">
+                          <td colSpan={6} className="empty-state">
                             {search
                               ? 'No employees match your search.'
                               : 'No employees yet. Add your first employee to get started.'}
@@ -1150,6 +1202,33 @@ useEffect(() => {
                             </td>
 
                             <td>{employee.jobTitle || '—'}</td>
+
+                            <td>
+                              <select
+                                className={`status-select status-${(employee.status ?? 'ACTIVE').toLowerCase()}`}
+                                value={employee.status ?? 'ACTIVE'}
+                                aria-label={`Employment status for ${employee.firstName} ${employee.lastName}`}
+                                onChange={(event) =>
+                                  void changeEmployeeStatus(
+                                    employee,
+                                    event.target.value as EmployeeStatus,
+                                  )
+                                }
+                              >
+                                <option value="ACTIVE">Active</option>
+                                <option value="ON_NOTICE">On notice</option>
+                                <option value="OFFBOARDED">Offboarded</option>
+                              </select>
+                              {employee.offboardingDate ? (
+                                <small className="status-date">
+                                  Left {employee.offboardingDate}
+                                </small>
+                              ) : employee.joiningDate ? (
+                                <small className="status-date">
+                                  Joined {employee.joiningDate}
+                                </small>
+                              ) : null}
+                            </td>
 
                             <td>
                               <span className="employee-id">
@@ -1316,7 +1395,9 @@ useEffect(() => {
                           </td>
                         </tr>
                       ) : (
-                        employees.map((employee) => {
+                        employees
+                          .filter((employee) => employee.status !== 'OFFBOARDED')
+                          .map((employee) => {
                           const record = getAttendance(employee.id)
                           const status = record?.status ?? 'PRESENT'
 

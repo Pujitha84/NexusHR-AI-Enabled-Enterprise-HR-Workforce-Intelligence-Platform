@@ -16,6 +16,7 @@ type EmployeeOption = {
   id: number
   firstName: string
   lastName: string
+  status?: string
 }
 
 const money = new Intl.NumberFormat('en-IN', {
@@ -259,7 +260,9 @@ export default function PayrollPage() {
             onChange={(e) => updateField('employeeId', e.target.value)}
           >
             <option value="">Select employee</option>
-            {employees.map((employee) => (
+            {employees
+              .filter((employee) => employee.status !== 'OFFBOARDED')
+              .map((employee) => (
               <option key={employee.id} value={employee.id}>
                 {employee.firstName} {employee.lastName} (ID {employee.id})
               </option>

@@ -1,5 +1,7 @@
 package com.hr_nexus.employee;
 
+import java.time.LocalDate;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -30,6 +32,13 @@ public class Employee {
     private String department;
 
     private String jobTitle;
+
+    // Lifecycle: ACTIVE, ON_NOTICE or OFFBOARDED
+    private String status = "ACTIVE";
+
+    private LocalDate joiningDate;
+
+    private LocalDate offboardingDate;
 
     public Employee() {
     }
@@ -82,5 +91,30 @@ public class Employee {
 
     public void setJobTitle(String jobTitle) {
         this.jobTitle = jobTitle;
+    }
+
+    // Employees created before the lifecycle feature have no status; treat them as active.
+    public String getStatus() {
+        return status == null ? "ACTIVE" : status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public LocalDate getJoiningDate() {
+        return joiningDate;
+    }
+
+    public void setJoiningDate(LocalDate joiningDate) {
+        this.joiningDate = joiningDate;
+    }
+
+    public LocalDate getOffboardingDate() {
+        return offboardingDate;
+    }
+
+    public void setOffboardingDate(LocalDate offboardingDate) {
+        this.offboardingDate = offboardingDate;
     }
 }

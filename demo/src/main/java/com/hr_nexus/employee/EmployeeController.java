@@ -1,7 +1,10 @@
-
 package com.hr_nexus.employee;
 
+import java.time.LocalDate;
 import java.util.List;
+
+import com.hr_nexus.ops.OpsRecord;
+import com.hr_nexus.ops.OpsRecordRepository;
 
 import jakarta.validation.Valid;
 
@@ -13,10 +16,21 @@ import org.springframework.web.server.ResponseStatusException;
 @RequestMapping("/api/employees")
 public class EmployeeController {
 
-    private final EmployeeRepository repository;
+    private static final List<String> STATUSES =
+            List.of("ACTIVE", "ON_NOTICE", "OFFBOARDED");
 
-    public EmployeeController(EmployeeRepository repository) {
+    private final EmployeeRepository repository;
+    private final OpsRecordRepository opsRepository;
+
+    public EmployeeController(
+            EmployeeRepository repository,
+            OpsRecordRepository opsRepository) {
         this.repository = repository;
+        this.opsRepository = opsRepository;
+    }
+
+    // Request body for changing an employee's lifecycle status
+    public record StatusChange(String status) {
     }
 
     // Get all employees
@@ -25,13 +39,33 @@ public class EmployeeController {
         return repository.findAll();
     }
 
-    // Add a new employee
+    // Add a new employee (starts the onboarding workflow)
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Employee createEmployee(
             @Valid @RequestBody Employee employee) {
         employee.setId(null);
-        return repository.save(employee);
+        employee.setStatus("ACTIVE");
+        employee.setOffboardingDate(null);
+        if (employee.getJoiningDate() == null) {
+            employee.setJoiningDate(LocalDate.now());
+        }
+
+        Employee saved = repository.save(employee);
+
+        // Onboarding task that HR can close in People Ops
+        OpsRecord task = new OpsRecord();
+        task.setCategory("ONBOARDING");
+        task.setEmployeeId(saved.getId());
+        task.setTitle("Onboard " + saved.getFirstName() + " "
+                + saved.getLastName());
+        task.setDetails(
+                "Complete documents, equipment and system access setup.");
+        task.setStatus("OPEN");
+        task.setRecordDate(LocalDate.now());
+        opsRepository.save(task);
+
+        return saved;
     }
 
     // Get one employee by ID
@@ -61,6 +95,34 @@ public class EmployeeController {
         existingEmployee.setJobTitle(updatedEmployee.getJobTitle());
 
         return repository.save(existingEmployee);
+    }
+
+    // Change lifecycle status: ACTIVE, ON_NOTICE or OFFBOARDED
+    @PutMapping("/{id}/status")
+    public Employee changeStatus(
+            @PathVariable Long id,
+            @RequestBody StatusChange change) {
+
+        Employee employee = repository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Employee not found"));
+
+        String status = change.status() == null
+                ? ""
+                : change.status().trim().toUpperCase();
+
+        if (!STATUSES.contains(status)) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Status must be ACTIVE, ON_NOTICE or OFFBOARDED");
+        }
+
+        employee.setStatus(status);
+        employee.setOffboardingDate(
+                status.equals("OFFBOARDED") ? LocalDate.now() : null);
+
+        return repository.save(employee);
     }
 
     // Delete an employee
