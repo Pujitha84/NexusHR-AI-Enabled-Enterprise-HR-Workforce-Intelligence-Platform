@@ -1,9 +1,10 @@
-
 import { useEffect, useMemo, useState } from 'react'
 import type { FormEvent } from 'react'
 import './App.css'
 import LeaveManagement from './LeaveManagement'
 import PeopleOps from './peopleops/PeopleOps'
+import PerformanceReviews from './performance/Performance'
+import PayrollPage from './payroll/Payroll'
 
 type Employee = {
   id: number
@@ -377,7 +378,7 @@ function App() {
   const [error, setError] = useState('')
   const [notice, setNotice] = useState('')
   const [activePage, setActivePage] = useState<
-  'overview' | 'attendance' | 'leave' | 'analytics' | 'settings' | 'peopleops'
+  'overview' | 'attendance' | 'leave' | 'analytics' | 'settings' | 'peopleops' | 'performance' | 'payroll'
 >('overview')
 
   const [attendanceDate, setAttendanceDate] = useState(today())
@@ -740,6 +741,22 @@ useEffect(() => {
 </a>
 
           <a
+            className={`nav-item ${activePage === 'payroll' ? 'active' : ''}`}
+            href="#payroll"
+            onClick={() => setActivePage('payroll')}
+          >
+            <span>₹</span> Payroll
+          </a>
+
+          <a
+            className={`nav-item ${activePage === 'performance' ? 'active' : ''}`}
+            href="#performance"
+            onClick={() => setActivePage('performance')}
+          >
+            <span>★</span> Performance
+          </a>
+
+          <a
             className={`nav-item ${activePage === 'analytics' ? 'active' : ''}`}
             href="#analytics"
             onClick={() => setActivePage('analytics')}
@@ -802,7 +819,13 @@ useEffect(() => {
                     ? 'Workforce analytics'
                     : activePage === 'settings'
                       ? 'Settings'
-                      : 'Overview'}
+                      : activePage === 'payroll'
+                        ? 'Payroll'
+                      : activePage === 'performance'
+                        ? 'Performance'
+                        : activePage === 'peopleops'
+                          ? 'People Ops'
+                          : 'Overview'}
             </strong>
           </div>
 
@@ -1426,6 +1449,10 @@ useEffect(() => {
   <LeaveManagement />
 ) : activePage === 'peopleops' ? (
   <PeopleOps />
+) : activePage === 'performance' ? (
+  <PerformanceReviews />
+) : activePage === 'payroll' ? (
+  <PayrollPage />
 ) : null}
 
           

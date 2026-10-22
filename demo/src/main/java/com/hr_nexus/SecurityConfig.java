@@ -39,6 +39,7 @@ public class SecurityConfig {
     .requestMatchers("/api/ops/**").hasRole("HR")
     .requestMatchers("/api/insights/**").hasRole("HR")
     .requestMatchers("/api/**").authenticated()
+    .requestMatchers("/api/performance/**").hasRole("HR")
     .anyRequest().permitAll()
 )
             .httpBasic(basic -> {})
