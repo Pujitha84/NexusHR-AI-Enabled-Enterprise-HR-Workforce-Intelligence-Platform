@@ -30,15 +30,16 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .userDetailsService(userDetailsService)
             .authorizeHttpRequests(auth -> auth
-    .requestMatchers("/", "/error", "/api/auth/login").permitAll()
+    .requestMatchers("/api/auth/login").permitAll()
     .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
     .requestMatchers("/api/employees/**").hasRole("HR")
     .requestMatchers("/api/leaves/**").hasAnyRole("HR", "EMPLOYEE")
     .requestMatchers("/api/attendance/**").hasRole("HR")
-    .requestMatchers("/api/payroll/**").hasRole("HR")     // NEW
-    .requestMatchers("/api/ops/**").hasRole("HR")         // NEW
-    .requestMatchers("/api/insights/**").hasRole("HR")    // NEW
-    .anyRequest().authenticated()
+    .requestMatchers("/api/payroll/**").hasRole("HR")
+    .requestMatchers("/api/ops/**").hasRole("HR")
+    .requestMatchers("/api/insights/**").hasRole("HR")
+    .requestMatchers("/api/**").authenticated()
+    .anyRequest().permitAll()
 )
             .httpBasic(basic -> {})
             .formLogin(form -> form.disable());
