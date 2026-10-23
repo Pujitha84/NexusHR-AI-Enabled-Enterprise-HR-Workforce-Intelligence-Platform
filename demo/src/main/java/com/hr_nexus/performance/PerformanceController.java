@@ -1,6 +1,7 @@
 package com.hr_nexus.performance;
 
 import com.hr_nexus.employee.EmployeeRepository;
+import com.hr_nexus.notification.NotificationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -13,11 +14,14 @@ public class PerformanceController {
 
     private final PerformanceRepository repository;
     private final EmployeeRepository employeeRepository;
+    private final NotificationService notificationService;
 
-    public PerformanceController(PerformanceRepository repository,
-                                 EmployeeRepository employeeRepository) {
+   public PerformanceController(PerformanceRepository repository,
+                                 EmployeeRepository employeeRepository,
+                                 NotificationService notificationService) {
         this.repository = repository;
         this.employeeRepository = employeeRepository;
+        this.notificationService = notificationService;
     }
 
     @GetMapping

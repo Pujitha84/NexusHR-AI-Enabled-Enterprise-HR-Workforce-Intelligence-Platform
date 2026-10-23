@@ -38,6 +38,8 @@ public class SecurityConfig {
     .requestMatchers("/api/payroll/**").hasRole("HR")
     .requestMatchers("/api/ops/**").hasRole("HR")
     .requestMatchers("/api/insights/**").hasRole("HR")
+    .requestMatchers("/api/documents/**").hasRole("HR")
+    .requestMatchers("/api/workflows/**").hasRole("HR")
     .requestMatchers("/api/**").authenticated()
     .requestMatchers("/api/performance/**").hasRole("HR")
     .anyRequest().permitAll()

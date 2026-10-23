@@ -3,12 +3,17 @@ package com.hr_nexus.employee;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.hr_nexus.documents.EmployeeDocumentRepository;
 import com.hr_nexus.ops.OpsRecord;
 import com.hr_nexus.ops.OpsRecordRepository;
+import com.hr_nexus.workflow.OnboardingWorkflow;
+import com.hr_nexus.workflow.OnboardingWorkflowRepository;
+import com.hr_nexus.workflow.WorkflowApprovalRepository;
 
 import jakarta.validation.Valid;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -21,12 +26,21 @@ public class EmployeeController {
 
     private final EmployeeRepository repository;
     private final OpsRecordRepository opsRepository;
+    private final OnboardingWorkflowRepository workflowRepository;
+    private final WorkflowApprovalRepository approvalRepository;
+    private final EmployeeDocumentRepository documentRepository;
 
     public EmployeeController(
             EmployeeRepository repository,
-            OpsRecordRepository opsRepository) {
+            OpsRecordRepository opsRepository,
+            OnboardingWorkflowRepository workflowRepository,
+            WorkflowApprovalRepository approvalRepository,
+            EmployeeDocumentRepository documentRepository) {
         this.repository = repository;
         this.opsRepository = opsRepository;
+        this.workflowRepository = workflowRepository;
+        this.approvalRepository = approvalRepository;
+        this.documentRepository = documentRepository;
     }
 
     // Request body for changing an employee's lifecycle status
@@ -64,6 +78,11 @@ public class EmployeeController {
         task.setStatus("OPEN");
         task.setRecordDate(LocalDate.now());
         opsRepository.save(task);
+
+        // Approval workflow: documents, manager approval, HR approval
+        OnboardingWorkflow workflow = new OnboardingWorkflow();
+        workflow.setEmployeeId(saved.getId());
+        workflowRepository.save(workflow);
 
         return saved;
     }
@@ -128,12 +147,19 @@ public class EmployeeController {
     // Delete an employee
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Transactional
     public void deleteEmployee(@PathVariable Long id) {
         if (!repository.existsById(id)) {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND,
                     "Employee not found");
         }
+
+        // Remove the employee's onboarding workflow and documents too
+        workflowRepository.findByEmployeeId(id).ifPresent(workflow ->
+                approvalRepository.deleteByWorkflowId(workflow.getId()));
+        workflowRepository.deleteByEmployeeId(id);
+        documentRepository.deleteByEmployeeId(id);
 
         repository.deleteById(id);
     }

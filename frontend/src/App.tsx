@@ -7,6 +7,7 @@ import PerformanceReviews from './performance/Performance'
 import PayrollPage from './payroll/Payroll'
 import './lifecycle.css'
 import './theme.css'
+import Onboarding from './onboarding/Onboarding'
 
 type EmployeeStatus = 'ACTIVE' | 'ON_NOTICE' | 'OFFBOARDED'
 
@@ -385,7 +386,7 @@ function App() {
   const [error, setError] = useState('')
   const [notice, setNotice] = useState('')
   const [activePage, setActivePage] = useState<
-  'overview' | 'attendance' | 'leave' | 'analytics' | 'settings' | 'peopleops' | 'performance' | 'payroll'
+  'overview' | 'attendance' | 'leave' | 'analytics' | 'settings' | 'peopleops' | 'performance' | 'payroll' | 'onboarding'
 >('overview')
 
   const [attendanceDate, setAttendanceDate] = useState(today())
@@ -793,6 +794,14 @@ useEffect(() => {
 </a>
 
           <a
+            className={`nav-item ${activePage === 'onboarding' ? 'active' : ''}`}
+            href="#onboarding"
+            onClick={() => setActivePage('onboarding')}
+          >
+            <span>☑</span> Onboarding
+          </a>
+
+          <a
             className={`nav-item ${activePage === 'payroll' ? 'active' : ''}`}
             href="#payroll"
             onClick={() => setActivePage('payroll')}
@@ -871,6 +880,8 @@ useEffect(() => {
                     ? 'Workforce analytics'
                     : activePage === 'settings'
                       ? 'Settings'
+                      : activePage === 'onboarding'
+                        ? 'Onboarding'
                       : activePage === 'payroll'
                         ? 'Payroll'
                       : activePage === 'performance'
@@ -886,9 +897,6 @@ useEffect(() => {
             <span className="system-status">
               <span /> System online
             </span>
-            <button className="icon-button" aria-label="Notifications">
-              ♧
-            </button>
             <div className="avatar top-avatar">HR</div>
           </div>
         </header>
@@ -1533,6 +1541,8 @@ useEffect(() => {
   <PeopleOps />
 ) : activePage === 'performance' ? (
   <PerformanceReviews />
+) : activePage === 'onboarding' ? (
+  <Onboarding />
 ) : activePage === 'payroll' ? (
   <PayrollPage />
 ) : null}
