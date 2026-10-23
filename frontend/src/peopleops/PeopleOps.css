@@ -1,6 +1,6 @@
 
 .people-ops-page {
-  color: #20213a;
+  color: #2b202a;
   font-family: Inter, system-ui, sans-serif;
 }
 
@@ -17,10 +17,10 @@
   width: 100%;
   min-width: 0;
   padding: 11px 13px;
-  border: 1px solid #e1e3f0;
+  border: 1px solid #eae1e9;
   border-radius: 10px;
-  background: #fff;
-  color: #292943;
+  background: #ffffff;
+  color: #332832;
   font: inherit;
   font-size: 14px;
   outline: none;
@@ -30,8 +30,8 @@
 .people-ops-page input:focus,
 .people-ops-page select:focus,
 .people-ops-page textarea:focus {
-  border-color: #7964ee;
-  box-shadow: 0 0 0 3px #7964ee20;
+  border-color: #b755a6;
+  box-shadow: 0 0 0 3px #b755a620;
 }
 
 .people-ops-page textarea {
@@ -43,7 +43,7 @@
   padding: 10px 16px;
   border: 0;
   border-radius: 10px;
-  background: #7257e8;
+  background: #ab4d99;
   color: white;
   font: inherit;
   font-size: 14px;
@@ -53,7 +53,7 @@
 }
 
 .people-ops-page button:hover {
-  background: #5c43d0;
+  background: #844779;
   transform: translateY(-1px);
 }
 
@@ -68,17 +68,17 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 16px;
   padding: 24px;
-  border: 1px solid #eceaf8;
+  border: 1px solid #f2e9f0;
   border-radius: 16px;
   background: white;
-  box-shadow: 0 4px 20px #29205b08;
+  box-shadow: 0 4px 20px #38223408;
 }
 
 .people-ops-page form label {
   display: flex;
   flex-direction: column;
   gap: 7px;
-  color: #555570;
+  color: #60545f;
   font-size: 13px;
   font-weight: 600;
 }

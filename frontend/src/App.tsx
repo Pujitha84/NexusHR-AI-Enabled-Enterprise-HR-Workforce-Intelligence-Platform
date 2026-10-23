@@ -6,6 +6,7 @@ import PeopleOps from './peopleops/PeopleOps'
 import PerformanceReviews from './performance/Performance'
 import PayrollPage from './payroll/Payroll'
 import './lifecycle.css'
+import './theme.css'
 
 type EmployeeStatus = 'ACTIVE' | 'ON_NOTICE' | 'OFFBOARDED'
 
