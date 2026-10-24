@@ -1,5 +1,7 @@
 package com.hr_nexus.insights;
 
+import java.util.List;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,5 +19,10 @@ public class InsightsController {
     @GetMapping("/overview")
     public InsightsResponse getOverview() {
         return insightsService.getOverview();
+    }
+
+    @GetMapping("/attrition")
+    public List<AttritionRisk> getAttritionRisks() {
+        return insightsService.getAttritionRisks();
     }
 }

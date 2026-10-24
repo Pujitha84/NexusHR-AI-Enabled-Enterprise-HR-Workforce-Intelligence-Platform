@@ -8,6 +8,7 @@ import PayrollPage from './payroll/Payroll'
 import './lifecycle.css'
 import './theme.css'
 import Onboarding from './onboarding/Onboarding'
+import Insights from './insights/Insights'
 
 type EmployeeStatus = 'ACTIVE' | 'ON_NOTICE' | 'OFFBOARDED'
 
@@ -386,7 +387,7 @@ function App() {
   const [error, setError] = useState('')
   const [notice, setNotice] = useState('')
   const [activePage, setActivePage] = useState<
-  'overview' | 'attendance' | 'leave' | 'analytics' | 'settings' | 'peopleops' | 'performance' | 'payroll' | 'onboarding'
+  'overview' | 'attendance' | 'leave' | 'analytics' | 'settings' | 'peopleops' | 'performance' | 'payroll' | 'onboarding' | 'insights'
 >('overview')
 
   const [attendanceDate, setAttendanceDate] = useState(today())
@@ -794,6 +795,14 @@ useEffect(() => {
 </a>
 
           <a
+            className={`nav-item ${activePage === 'insights' ? 'active' : ''}`}
+            href="#insights"
+            onClick={() => setActivePage('insights')}
+          >
+            <span>✦</span> AI Insights
+          </a>
+
+          <a
             className={`nav-item ${activePage === 'onboarding' ? 'active' : ''}`}
             href="#onboarding"
             onClick={() => setActivePage('onboarding')}
@@ -880,6 +889,8 @@ useEffect(() => {
                     ? 'Workforce analytics'
                     : activePage === 'settings'
                       ? 'Settings'
+                      : activePage === 'insights'
+                        ? 'AI Insights'
                       : activePage === 'onboarding'
                         ? 'Onboarding'
                       : activePage === 'payroll'
@@ -897,6 +908,9 @@ useEffect(() => {
             <span className="system-status">
               <span /> System online
             </span>
+            <button className="icon-button" aria-label="Notifications">
+              ♧
+            </button>
             <div className="avatar top-avatar">HR</div>
           </div>
         </header>
@@ -1545,6 +1559,8 @@ useEffect(() => {
   <Onboarding />
 ) : activePage === 'payroll' ? (
   <PayrollPage />
+) : activePage === 'insights' ? (
+  <Insights />
 ) : null}
 
           
